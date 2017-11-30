@@ -9,8 +9,8 @@
 const PropTypes = require('prop-types');
 const React = require('react');
 const {Glyphicon} = require('react-bootstrap');
-const Dialog = require('../../MapStore2/web/client/components/misc/Dialog');
-const Toolbar = require('../../MapStore2/web/client/components/misc/toolbar/Toolbar');
+const Dialog = require('./Dialog');
+const Toolbar = require('./toolbar/Toolbar');
 
 const sizes = {
     sm: ' ms-sm',
@@ -42,6 +42,7 @@ class ResizableModal extends React.Component {
     static propTypes = {
         show: PropTypes.bool,
         fullscreen: PropTypes.bool,
+        clickOutEnabled: PropTypes.bool,
         fullscreenType: PropTypes.string,
         onClose: PropTypes.func,
         title: PropTypes.node,
@@ -54,6 +55,7 @@ class ResizableModal extends React.Component {
         show: false,
         onClose: null,
         title: '',
+        clickOutEnabled: true,
         fullscreen: false,
         fullscreenType: 'full',
         buttons: [],
@@ -67,16 +69,16 @@ class ResizableModal extends React.Component {
 
     render() {
         const sizeClassName = sizes[this.props.size] || '';
-        const fullscreeClassName = this.props.fullscreen && this.state.fullscreen === 'expanded' && fullscreen.className[this.props.fullscreenType] || '';
+        const fullscreenClassName = this.props.fullscreen && this.state.fullscreen === 'expanded' && fullscreen.className[this.props.fullscreenType] || '';
         return (
             <Dialog
                 id="ms-resizable-modal"
                 style={{display: this.props.show ? 'flex' : 'none'}}
-                onClickOut={this.props.onClose}
+                onClickOut={this.props.clickOutEnabled && this.props.onClose}
                 containerClassName="ms-resizable-modal"
                 draggable={false}
                 modal
-                className={'modal-dialog modal-content' + sizeClassName + fullscreeClassName}>
+                className={'modal-dialog modal-content' + sizeClassName + fullscreenClassName}>
                 <span role="header">
                     <h4 className="modal-title">
                         <div className="ms-title">{this.props.title}</div>
